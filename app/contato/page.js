@@ -4,11 +4,12 @@ import React from 'react';
 import { useState } from "react"
 import { ToastContainer, toast } from 'react-toastify';
 
-
+// testando um teste com uma testada
 export default function Contato(){
 
     const[ nome, setNome ] = useState("")
     const[ mensagem, setMensagem ] = useState("")
+
     const erro = () => toast.error("erro");
     const acerto = () => toast.acerto("acerto");
     

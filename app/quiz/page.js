@@ -54,10 +54,10 @@ function calculaTotal(){
             
             <h2> Quanto é dois + 2?</h2>
             
-             <p className={selecionado [0]} onClick={()=> { alteraP3(0); alteraSelecionado(["selecinado","","",""])} }> 2</p> 
-             <p className={selecionado [1]} onClick={()=> { alteraP3(0); alteraSelecionado(["","selecinado","",""])} }> 0</p> 
-             <p className={selecionado [2]} onClick={()=> { alteraP3(0); alteraSelecionado(["","","selecinado",""])} }> aaaaa</p> 
-             <p className={selecionado [3]} onClick={()=> { alteraP3(0); alteraSelecionado(["","","","selecinado"])} }> sim</p> 
+             <p className={selecionado[0]} onClick={()=> { alteraP3(1); alteraSelecionado(["selecinado","","",""])} }> 2</p> 
+             <p className={selecionado[1]} onClick={()=> { alteraP3(0); alteraSelecionado(["","selecinado","",""])} }> 0</p> 
+             <p className={selecionado[2]} onClick={()=> { alteraP3(0); alteraSelecionado(["","","selecinado",""])} }> aaaaa</p> 
+             <p className={selecionado[3]} onClick={()=> { alteraP3(0); alteraSelecionado(["","","","selecinado"])} }> sim</p> 
             
 
     

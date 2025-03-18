@@ -1,7 +1,139 @@
-.selecionado{
-    color: blue;
-    border: 1px solid grey;
-    padding: 10px;
-    width: 200px;
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+
+/* Reset básico */
+body {
+    background: #e8fbd9;
+    color: #444;
+    font-family: 'Open Sans', sans-serif; /* Alterei para a fonte Open Sans */
+    margin: 0;
 }
+
+/* Menu superior */
+.menuSuperior {
+    background: #ffffff;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.menuSuperiorButton {
+    background: transparent;
+    border: none;
+    display: flex;
+    color: #73c82c;
+    font-size: 25px;
+}
+
+/* Conteúdo geral */
+.Conteudo {
+    text-align: center;
+    margin: 20px;
+    box-shadow: 2px 2px 2px #8a94a0;
+    border-radius: 10px;
+    padding: 20px;
+    padding-right: 10px;
+    color: #444;
+    align-items: center;
+    display: flex;
+    background: #73c82c;
+    font-size: 20px;
+}
+
+.Conteudo input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+/* Painel esquerdo */
+.painelEsquerdo {
+    padding: 40px;
+    display: flex;
+    padding-right: 20px;
+    padding-left: 20px;
+    align-items: center;
+}
+
+/* Estilo para os botões */
+.button,
+.voltar {
+    box-shadow: 2px 2px 2px #8a94a0;
+    border-radius: 10px;
+    padding-right: 20px;
+    padding-left: 20px;
+    align-items: center;
+    background: #ffe100;
+    color: #444;
+    display: flex;
+    justify-content: space-between;
+    font-size: 20px;
+    margin-top: 20px;
+}
+
+.button i,
+.voltar i {
+    margin-right: 10px;
+}
+
+/* Tabela de produtos */
+table {
+    width: 100%;
+    margin-top: 30px;
+    border-collapse: collapse;
+}
+
+table th,
+table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+table th {
+    background-color: #73c82c;
+    color: #fff;
+}
+
+table tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+table caption {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* Card com o texto "Produtos Cadastrados" */
+.produtos {
+    margin-top: 20px; /* Espaçamento superior */
+    margin-bottom: 20px; /* Espaçamento inferior */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    background: #73c82c;
+    padding: 10px 20px;
+    border-radius: 10px;
+}
+
+.produtos i {
+    margin-right: 10px;
+}
+
+/* Icones */
+.fa-solid {
+    margin-right: 10px;
+    font-size: 20px;
+}
+
+/* Estilos extras */
+h1 {
+    margin: 0;
+    font-size: 30px;
+}
+
 

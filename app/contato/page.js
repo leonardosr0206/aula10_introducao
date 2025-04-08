@@ -153,7 +153,16 @@ export default Estoque;
 
 
 
+npm install @fortawesome/react-fontawesome @fortawesome/free-solid-svg-icons
 
+
+    import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';  // Importando o ícone de edição
+
+
+<button className="button-edit">
+                        <FontAwesomeIcon icon={faPencilAlt} /> {/* Ícone de lápis */}
+                      </button>
 
 
 /* Adicionar ao css*/

@@ -392,3 +392,151 @@ export default Estoque;
   flex: 1; /* Cada tabela ocupa metade do espaço disponível */
   overflow-x: auto; /* Permite rolar a tabela horizontalmente, se necessário */
 }
+
+
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+import conexao from "@/app/lib/conexao";
+
+export async function GET() {
+    const query = `SELECT * FROM produtos;`; // Corrigindo a sintaxe
+    const [results] = await conexao.execute(query);
+
+    return new Response(
+        JSON.stringify(results),
+        {
+            status: 200,
+            headers: { "Content-Type": "application/json" }
+        }
+    );
+}
+
+
+
+
+
+
+export async function POST(request) {
+    const body = await request.json();
+
+    const query = `
+        INSERT INTO estoque (id_produto, quantidade)
+        VALUES (?, ?)
+    `;
+    const [results] = await conexao.execute(
+        query,
+        [body.IDProduto, body.quantidade]
+    );
+
+    return new Response(
+        JSON.stringify({ id: results.insertId, mensagem: 'Produto inserido com sucesso!' }),
+        { status: 201, headers: { "Content-Type": "application/json" } }
+    );
+}
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+const handleSalvar = async () => {
+    const novoProduto = {
+        IDProduto: IDProduto,
+        quantidade: quantidadeProduto,
+    };
+
+    const response = await fetch('/api/estoque', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(novoProduto),
+    });
+
+    const data = await response.json();
+
+    // Assumindo que o produto foi inserido corretamente, agora vamos atualizar a lista de produtos.
+    // Aqui você pode obter o produto pelo IDProduto se necessário.
+    setProdutos((prevProdutos) => [
+        ...prevProdutos,
+        {
+            nome: IDProduto, // Pode buscar o nome do produto por ID aqui, se necessário
+            preco: 'Não definido', // Você pode buscar o preço aqui também
+            quantidade: quantidadeProduto,
+            id: data.id, // ID retornado pelo banco
+        },
+    ]);
+
+    // Limpar os campos após o cadastro
+    alteraIDProduto('');
+    alteraQuantidadeProduto('');
+    alteraA1(false); // Fecha o formulário após salvar
+};
+
+
+
+
+
+
+
+const [searchTerm, setSearchTerm] = useState('');
+
+const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+};
+
+const filteredProducts = produtos.filter((produto) =>
+    produto.nome.toLowerCase().includes(searchTerm.toLowerCase())
+);
+
+
+
+
+
+
+
+
+
+<input 
+    type="text" 
+    value={searchTerm} 
+    onChange={handleSearchChange} 
+    placeholder="Buscar produto" 
+/>
+<button className="pesquisa">Pesquisar</button>
+
+{/* Primeira tabela com ícones */}
+<div className="tabela-scroll">
+    <table className="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col"></th>
+                <th scope="col">Produtos</th>
+                <th scope="col">Preço</th>
+                <th scope="col">Quantidade</th>
+            </tr>
+        </thead>
+        <tbody>
+            {filteredProducts.map((produto, index) => (
+                <tr key={produto.id}>
+                    <th scope="row">{index + 1}</th>
+                    <td>{produto.nome}</td>
+                    <td>{produto.preco}</td>
+                    <td>{produto.quantidade}</td>
+                    <td>
+                        <button className="button-edit">
+                            <FontAwesomeIcon icon={faPencilAlt} />
+                        </button>
+                        <button className="button-edit">
+                            <FontAwesomeIcon icon={faTrashAlt} />
+                        </button>
+                    </td>
+                </tr>
+            ))}
+        </tbody>
+    </table>
+</div>
+
+

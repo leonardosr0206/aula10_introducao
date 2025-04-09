@@ -177,17 +177,16 @@ import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';  // Importando 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
-    'use client'
+   'use client'
 
 import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './pagina_estoque.css';
 
-
 // npm install @fortawesome/react-fontawesome @fortawesome/free-solid-svg-icons
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';   // Importando o ícone de edição
-import { faPencilAlt, faTrashAlt, faMagnifyingGlass, } from '@fortawesome/free-solid-svg-icons';  // Importando o ícone de edição
+import { faPencilAlt, faTrashAlt, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';  // Importando o ícone de edição
 
 const Estoque = () => {
   const [A1, alteraA1] = useState(false);
@@ -206,9 +205,9 @@ const Estoque = () => {
     setProdutos(data); // Atualiza o estado com os produtos
   };
 
-  useEffect(()=> {
+  useEffect(() => {
     buscaTodos()
-}, [])
+  }, [])
 
   const handleClick = () => {
     alteraA1(!A1);
@@ -232,7 +231,7 @@ const Estoque = () => {
 
     setProdutos([...produtos, {novoProduto, id: data.id }]);
 
-    // volta os campos após clicar em salvar salvar
+    // volta os campos após clicar em salvar
     alteraNomeProduto('');
     alteraPrecoProduto('');
     alteraQuantidadeProduto('');
@@ -269,8 +268,6 @@ const Estoque = () => {
                 </div>
               </div>
 
-              
-
               <div className="Conteudo">
                 <div className="CardGeral">
                   <input
@@ -293,23 +290,24 @@ const Estoque = () => {
           )}
         </div>
 
-        {/* Container para a tabela e o título */}
+        {/* Container para as tabelas */}
         <div className="produtosCadastradosContainer">
           <div className="produtosCadastradosTitulo">
             <i className="fa-solid fa-file"></i>
-            <p className="lupa" >Produtos Cadastrados:</p>
-            <p> <FontAwesomeIcon icon={faMagnifyingGlass} /></p>
-            <input /> 
+            <p className="lupa">Produtos Cadastrados:</p>
+            <p><FontAwesomeIcon icon={faMagnifyingGlass} /></p>
+            <input />
             <button className="pesquisa"> Pesquisar </button>
           </div>
 
+          {/* Primeira tabela (com ícones) */}
           <div className="tabela-scroll">
             <table className="table table-striped">
               <thead>
                 <tr>
                   <th scope="col"></th>
                   <th scope="col">Produtos</th>
-                  <th scope="col">Preço </th>
+                  <th scope="col">Preço</th>
                   <th scope="col">Quantidade</th>
                 </tr>
               </thead>
@@ -318,16 +316,39 @@ const Estoque = () => {
                   <tr key={index}>
                     <th scope="row">{index + 1}</th>
                     <td>{produto.nome}</td>
-                    <td>{produto.preco }</td>
+                    <td>{produto.preco}</td>
                     <td>{produto.quantidade}</td>
                     <td>
-                    <button className="button-edit">
+                      <button className="button-edit">
                         <FontAwesomeIcon icon={faPencilAlt} />
                       </button>
                       <button className="button-edit">
-                      <FontAwesomeIcon icon={faTrashAlt} />
+                        <FontAwesomeIcon icon={faTrashAlt} />
                       </button>
                     </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Segunda tabela (sem ícones) */}
+          <div className="tabela-scroll">
+            <p>Registro</p> {/* Nome da tabela */}
+            <table className="table table-striped">
+              <thead>
+                <tr>
+                  <th scope="col">Nome</th>
+                  <th scope="col">Quantidade</th>
+                  <th scope="col">Registro</th>
+                </tr>
+              </thead>
+              <tbody>
+                {produtos.map((produto, index) => (
+                  <tr key={index}>
+                    <td>{produto.nome}</td>
+                    <td>{produto.quantidade}</td>
+                    <td>{index + 1}</td> {/* Exibe o número de registro */}
                   </tr>
                 ))}
               </tbody>
@@ -356,3 +377,18 @@ export default Estoque;
 
 
 
+
+
+
+
+/* Atualize o seu arquivo CSS para incluir o seguinte código */
+.produtosCadastradosContainer {
+  display: flex;
+  justify-content: space-between; /* Espaço entre as tabelas */
+  gap: 20px; /* Distância entre as tabelas */
+}
+
+.tabela-scroll {
+  flex: 1; /* Cada tabela ocupa metade do espaço disponível */
+  overflow-x: auto; /* Permite rolar a tabela horizontalmente, se necessário */
+}

@@ -409,3 +409,206 @@ const Estoque = () => {
 
 export default Estoque;
 
+
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------------------------
+
+
+
+
+const express = require('express');
+const router = express.Router();
+const pool = require('./db'); // Conexão com o banco
+
+// GET: Todos os produtos com quantidade total
+router.get('/produtos', (req, res) => {
+  const query = `
+    SELECT p.id, p.nome, p.preco, IFNULL(SUM(e.quantidade), 0) AS quantidade,
+           MAX(e.data) AS dataCadastro
+    FROM produtos p
+    LEFT JOIN estoque e ON p.id = e.id_produto
+    GROUP BY p.id;
+  `;
+  pool.query(query, (err, results) => {
+    if (err) {
+      console.error('Erro ao obter produtos:', err);
+      res.status(500).send('Erro no servidor');
+    } else {
+      res.json(results);
+    }
+  });
+});
+
+// POST: Criar novo produto com estoque inicial
+router.post('/estoque', (req, res) => {
+  const { nome, preco, quantidade } = req.body;
+
+  const insertProduto = 'INSERT INTO produtos (nome, preco) VALUES (?, ?)';
+  pool.query(insertProduto, [nome, preco], (err, result) => {
+    if (err) {
+      console.error('Erro ao inserir produto:', err);
+      return res.status(500).send('Erro ao inserir produto');
+    }
+
+    const id_produto = result.insertId;
+    const insertEstoque = 'INSERT INTO estoque (id_produto, quantidade, data) VALUES (?, ?, NOW())';
+    pool.query(insertEstoque, [id_produto, quantidade], (err2) => {
+      if (err2) {
+        console.error('Erro ao inserir estoque:', err2);
+        return res.status(500).send('Erro ao inserir estoque');
+      }
+
+      res.status(201).json({ id: id_produto });
+    });
+  });
+});
+
+// PUT: Adiciona nova movimentação de estoque (positivo ou negativo)
+router.put('/estoque', (req, res) => {
+  const { id_produto, quantidade } = req.body;
+
+  const insertEstoque = 'INSERT INTO estoque (id_produto, quantidade, data) VALUES (?, ?, NOW())';
+  pool.query(insertEstoque, [id_produto, quantidade], (err) => {
+    if (err) {
+      console.error('Erro ao atualizar estoque:', err);
+      res.status(500).send('Erro ao atualizar estoque');
+    } else {
+      res.send({ success: true, message: 'Movimentação registrada com sucesso' });
+    }
+  });
+});
+
+// PUT: Atualizar nome do produto
+router.put('/produtos', (req, res) => {
+  const { id, nome } = req.body;
+  const query = 'UPDATE produtos SET nome = ? WHERE id = ?';
+  pool.query(query, [nome, id], (err) => {
+    if (err) {
+      console.error('Erro ao atualizar nome:', err);
+      res.status(500).send('Erro ao atualizar nome');
+    } else {
+      res.json({ success: true });
+    }
+  });
+});
+
+module.exports = router;
+
+
+
+
+
+Consultas SQL:
+
+Inserção de Produto:
+
+sql
+Copiar
+Editar
+INSERT INTO produtos (nome, preco) VALUES (?, ?);
+Leitura de Produtos com Estoque:
+
+sql
+Copiar
+Editar
+SELECT p.id, p.nome, p.preco, IFNULL(SUM(e.quantidade), 0) AS quantidade
+FROM produtos p
+LEFT JOIN estoque e ON p.id = e.id_produto
+GROUP BY p.id;
+Inserção de Registro de Estoque:
+
+sql
+Copiar
+Editar
+INSERT INTO estoque (id_produto, quantidade, data) VALUES (?, ?, NOW());
+Atualização de Quantidade de Estoque:
+
+sql
+Copiar
+Editar
+UPDATE estoque SET quantidade = ?, data = NOW() WHERE id_produto = ? ORDER BY data DESC LIMIT 1;
+Exemplo de Implementação de Rota com Express:
+
+javascript
+Copiar
+Editar
+const express = require('express');
+const router = express.Router();
+const pool = require('./db'); // Arquivo que configura a conexão com o banco
+
+// Rota para obter todos os produtos com estoque
+router.get('/produtos', (req, res) => {
+  const query = `
+    SELECT p.id, p.nome, p.preco, IFNULL(SUM(e.quantidade), 0) AS quantidade
+    FROM produtos p
+    LEFT JOIN estoque e ON p.id = e.id_produto
+    GROUP BY p.id;
+  `;
+  pool.query(query, (err, results) => {
+    if (err) {
+      console.error('Erro ao obter produtos:', err);
+      res.status(500).send('Erro no servidor');
+    } else {
+      res.json(results);
+    }
+  });
+});
+
+// Rota para adicionar entrada de estoque
+router.post('/estoque', (req, res) => {
+  const { id_produto, quantidade } = req.body;
+  const query = 'INSERT INTO estoque (id_produto, quantidade, data) VALUES (?, ?, NOW())';
+  pool.query(query, [id_produto, quantidade], (err, results) => {
+    if (err) {
+      console.error('Erro ao adicionar estoque:', err);
+      res.status(500).send('Erro no servidor');
+    } else {
+      res.status(201).send('Estoque adicionado com sucesso');
+    }
+  });
+});
+
+// Rota para atualizar quantidade de estoque
+router.put('/estoque', (req, res) => {
+  const { id_produto, quantidade } = req.body;
+  const query = 'UPDATE estoque SET quantidade = ?, data = NOW() WHERE id_produto = ? ORDER BY data DESC LIMIT 1';
+  pool.query(query, [quantidade, id_produto], (err, results) => {
+    if (err) {
+      console.error('Erro ao atualizar estoque:', err);
+      res.status(500).send('Erro no servidor');
+    } else {
+      res.send('Estoque atualizado com sucesso');
+    }
+  });
+});
+
+module.exports = router;
+
+
+
+
+
+/backend
+│
+├── db.js                 ← Conexão com o banco de dados
+├── routes.js             ← Arquivo que você acabou de colar
+└── index.js              ← Ponto de entrada do servidor
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
